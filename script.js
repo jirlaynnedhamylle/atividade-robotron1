@@ -1,4 +1,4 @@
-var colors = [
+const colors = [
     "imagens/robotron-amarelo.png",
     "imagens/robotron-azul.png",
     "imagens/robotron-branco.png",
@@ -7,17 +7,10 @@ var colors = [
     "imagens/robotron-vermelho.png"
 ];
 
-var currentColorIndex = 0;
+let currentColorIndex = 0;
 
 function changeColor(direction) {
-    currentColorIndex += direction;
-
-    if (currentColorIndex < 0) {
-        currentColorIndex = colors.length - 1;
-    } else if (currentColorIndex >= colors.length) {
-        currentColorIndex = 0;
-    }
-
+    currentColorIndex = (currentColorIndex + direction + colors.length) % colors.length;
     document.getElementById('myImage').src = colors[currentColorIndex];
 }
 
@@ -31,18 +24,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let valor = 0;
 
+        function updateValue(change) {
+            valor = Math.min(10, Math.max(0, valor + change));
+            valueElement.textContent = valor;
+        }
+
         decrementButton.addEventListener('click', () => {
-            if (valor > 0) {
-                valor--;
-                valueElement.textContent = valor;
-            }
+            updateValue(-1);
         });
 
         incrementButton.addEventListener('click', () => {
-            if (valor < 10) {
-                valor++;
-                valueElement.textContent = valor;
-            }
+            updateValue(1);
         });
     });
 });
